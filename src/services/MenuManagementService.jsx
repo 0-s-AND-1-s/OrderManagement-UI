@@ -16,3 +16,12 @@ export const deleteItem = (itemId) =>
 
 export const createItem = (item) =>
   axios.post(baseURL + `/createItem`, item, headerConfig);
+
+export const partialUpdate = (item, id) => {
+  console.log(typeof id);
+  console.log(baseURL + `/updateItem/${id}`);
+  return axios.patch(baseURL + `/updateItem/${id}`, item, headerConfig);
+};
+
+export const getItemById = (id) =>
+  axios.get(baseURL + `/getItem/${id}`, headerConfig);

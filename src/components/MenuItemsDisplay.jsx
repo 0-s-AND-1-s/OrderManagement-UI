@@ -16,6 +16,10 @@ function MenuItemsDisplay() {
     setMenuItems(menuItems.filter((item) => item.itemId !== itemId));
   }
 
+  function updateMenuItem(id) {
+    navigate(`/updateItem/${id}`);
+  }
+
   function addMenuItem() {
     navigate("/createItem");
   }
@@ -43,7 +47,12 @@ function MenuItemsDisplay() {
                     <td>{item.itemCategory}</td>
                     {/* <td>{item.itemAvailability}</td> */}
                     <td>
-                      <button className="btn btn-primary">Update</button>
+                      <button
+                        className="btn btn-primary"
+                        onClick={() => updateMenuItem(item.itemId)}
+                      >
+                        Update
+                      </button>
                     </td>
                     <td>
                       <button
