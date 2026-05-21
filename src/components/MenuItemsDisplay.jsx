@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { getAllItems, deleteItem } from "../services/MenuManagementService";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function MenuItemsDisplay() {
   const [menuItems, setMenuItems] = useState([]);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     getAllItems().then((response) => setMenuItems(response.data));
@@ -16,6 +16,9 @@ function MenuItemsDisplay() {
     setMenuItems(menuItems.filter((item) => item.itemId !== itemId));
   }
 
+  function addMenuItem() {
+    navigate("/createItem");
+  }
   return (
     <>
       <div className="container">
@@ -56,6 +59,9 @@ function MenuItemsDisplay() {
             </tbody>
           </table>
         </div>
+        <button onClick={() => addMenuItem()} className="btn btn-primary">
+          Add
+        </button>
       </div>
     </>
   );

@@ -13,3 +13,6 @@ export const getAllItems = () =>
 
 export const deleteItem = (itemId) =>
   axios.delete(baseURL + `/deleteItem/${itemId}`, headerConfig);
+
+export const createItem = (item) =>
+  axios.post(baseURL + `/createItem`, item, headerConfig);
