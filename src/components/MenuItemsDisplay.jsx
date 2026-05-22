@@ -34,6 +34,7 @@ function MenuItemsDisplay() {
                 <th>Item Name</th>
                 <th>Item Price</th>
                 <th>Item Category</th>
+                <th>Item Availability</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -45,7 +46,9 @@ function MenuItemsDisplay() {
                     <td>{item.itemName}</td>
                     <td>{item.itemPrice}</td>
                     <td>{item.itemCategory}</td>
-                    {/* <td>{item.itemAvailability}</td> */}
+                    <td>
+                      {item.itemAvailability ? "Available" : "Not Available"}
+                    </td>
                     <td>
                       <button
                         className="btn btn-primary"

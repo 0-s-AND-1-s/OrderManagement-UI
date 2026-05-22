@@ -37,9 +37,9 @@ function PartialUpdateComponent() {
     setMenuObj({ ...menuObj, itemCategory: event.target.value });
   };
 
-  //     const itemAvailabilityHandler = (event) => {
-  //     setMenuObj(...menuObj, `itemAvailability:${event.target.value}`);
-  //   };
+  const itemAvailabilityHandler = (event) => {
+    setMenuObj({ ...menuObj, itemAvailability: event.target.value === "true" });
+  };
   return (
     <>
       <h1>Hey Abhi !!You're here to Update a MenuItem Tadaa 😒</h1>
@@ -85,15 +85,26 @@ function PartialUpdateComponent() {
                   />
                 </div>
                 <div className="form-group mb-3">
-                  <label htmlFor="itemAvailable">Item Availability::</label>
-                  <select
-                    name="itemAvailability"
-                    id="itemAvailable"
-                    className="form-select"
-                  >
-                    <option value="true">Available</option>
-                    <option value="false">Not Available</option>
-                  </select>
+                  <label>
+                    <input
+                      type="radio"
+                      name="availabilityGroup"
+                      value="true"
+                      checked={menuObj.itemAvailability === true}
+                      onChange={itemAvailabilityHandler}
+                    />
+                    Available
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      name="availabilityGroup"
+                      value="false"
+                      checked={menuObj.itemAvailability === false}
+                      onChange={itemAvailabilityHandler}
+                    />
+                    Not Available
+                  </label>
                 </div>
                 <div className="form-group mb-3">
                   <input
