@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getItemById, partialUpdate } from "../services/MenuManagementService";
 
@@ -6,21 +6,69 @@ function PartialUpdateComponent() {
   const { itemId } = useParams();
   const [menuObj, setMenuObj] = useState({});
   const navigate = useNavigate();
+  let partialObj = useRef({});
   useEffect(() => {
     // Get Menu Id here and
+    console.log("Partial Update Component useEffect() got called");
     getItemById(itemId).then((response) => {
-      console.log("MenuItem By ID", response.data);
-      setMenuObj(response.data);
+      console.log("response.data", response.data);
+      const stateMenuObj = response.data;
+      partialObj.current = stateMenuObj;
+      setMenuObj(stateMenuObj);
     });
   }, [itemId]);
+  function getPartialUpdateItemObj() {
+    const patchPayloadObj = partialObj.current;
+    const {
+      itemName: partialItemName,
+      itemAvailability: partialItemAvailability,
+      itemPrice: partialItemPrice,
+      itemCategory: partialItemCategory,
+    } = patchPayloadObj;
+    console.log("BEFORE FILTERING OUT THE FIELDS");
+    console.log("PatchPayloadObj", patchPayloadObj);
+    console.log("state menuObj", menuObj);
+    /* Here unecessarily you're going through this if conditions down below even if you don't change anyfield which means
+    both menuObj and patchPayloadObj points to the same reference so deleting in patchPayloadObj will also delete the field in menuObj
+    (Which isn't good idea to delete the state hook object properties unnecessarily so for now I'm keeping the same if condition as down below) */
+
+    /* Now your task is to try to improve this logic by removing these if conditions and optimize it or change the login using Object methods*/
+    if (patchPayloadObj !== menuObj) {
+      if (menuObj.itemName === partialItemName) {
+        delete patchPayloadObj.itemName;
+      }
+      if (menuObj.itemPrice === partialItemPrice) {
+        delete patchPayloadObj.itemPrice;
+      }
+      if (menuObj.itemCategory === partialItemCategory) {
+        delete patchPayloadObj.itemCategory;
+      }
+      if (menuObj.itemAvailability === partialItemAvailability) {
+        delete patchPayloadObj.itemAvailability;
+      }
+    }
+    console.log("PatchPayloadObj", patchPayloadObj);
+    console.log("state menuObj", menuObj);
+    if (patchPayloadObj !== menuObj) {
+      Object.keys(menuObj).forEach((menuObjKey) => {
+        if (menuObjKey in patchPayloadObj)
+          patchPayloadObj[menuObjKey] = menuObj[menuObjKey];
+      });
+    }
+    return patchPayloadObj;
+  }
 
   const updateItem = async (event) => {
     event.preventDefault();
+
+    const partialMenuObj = getPartialUpdateItemObj();
+
     console.log(
-      "Your Updated Obj before sending a request to backend",
-      menuObj,
+      "Your Partial Obj before sending a request to backend",
+      partialMenuObj,
     );
-    const response = await partialUpdate(menuObj, itemId);
+
+    const response = await partialUpdate(partialMenuObj, itemId);
     console.log("Item Updation status", response.data);
     navigate("/");
   };
@@ -40,13 +88,14 @@ function PartialUpdateComponent() {
   const itemAvailabilityHandler = (event) => {
     setMenuObj({ ...menuObj, itemAvailability: event.target.value === "true" });
   };
+
   return (
     <>
       <h1>Hey Abhi !!You're here to Update a MenuItem Tadaa 😒</h1>
       <div className="container">
         <div className="row">
           <div className="card col-md-6 offset-md-3">
-            <h3 className="text-center">Update MenuItem</h3>
+            <h3 className="text-center">Partial Update MenuItem</h3>
             <div className="card-body">
               <form onSubmit={updateItem}>
                 <div className="form-group mb-3">

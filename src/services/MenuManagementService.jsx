@@ -25,3 +25,7 @@ export const partialUpdate = (item, id) => {
 
 export const getItemById = (id) =>
   axios.get(baseURL + `/getItem/${id}`, headerConfig);
+
+export const updateMenuItem = (item, id) => {
+  return axios.put(baseURL + `/updateItem/${id}`, item, headerConfig);
+};

@@ -20,6 +20,10 @@ function MenuItemsDisplay() {
     navigate(`/updateItem/${id}`);
   }
 
+  function partialUpdateItem(id) {
+    navigate(`/partialUpdateItem/${id}`);
+  }
+
   function addMenuItem() {
     navigate("/createItem");
   }
@@ -55,6 +59,14 @@ function MenuItemsDisplay() {
                         onClick={() => updateMenuItem(item.itemId)}
                       >
                         Update
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        className="btn btn-primary"
+                        onClick={() => partialUpdateItem(item.itemId)}
+                      >
+                        Partial Update
                       </button>
                     </td>
                     <td>
