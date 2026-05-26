@@ -7,6 +7,7 @@ function PartialUpdateComponent() {
   const [menuObj, setMenuObj] = useState({});
   const navigate = useNavigate();
   let partialObj = useRef({});
+
   useEffect(() => {
     // Get Menu Id here and
     console.log("Partial Update Component useEffect() got called");
@@ -17,60 +18,28 @@ function PartialUpdateComponent() {
       setMenuObj(stateMenuObj);
     });
   }, [itemId]);
+
   function getPartialUpdateItemObj() {
     const patchPayloadObj = partialObj.current;
-    const {
-      itemName: partialItemName,
-      itemAvailability: partialItemAvailability,
-      itemPrice: partialItemPrice,
-      itemCategory: partialItemCategory,
-    } = patchPayloadObj;
-    console.log("BEFORE FILTERING OUT THE FIELDS");
-    console.log("PatchPayloadObj", patchPayloadObj);
-    console.log("state menuObj", menuObj);
-    /* Here unecessarily you're going through this if conditions down below even if you don't change anyfield which means
-    both menuObj and patchPayloadObj points to the same reference so deleting in patchPayloadObj will also delete the field in menuObj
-    (Which isn't good idea to delete the state hook object properties unnecessarily so for now I'm keeping the same if condition as down below) */
-
-    /* Now your task is to try to improve this logic by removing these if conditions and optimize it or change the login using Object methods*/
+    const patchReqObject = {};
     if (patchPayloadObj !== menuObj) {
-      if (menuObj.itemName === partialItemName) {
-        delete patchPayloadObj.itemName;
-      }
-      if (menuObj.itemPrice === partialItemPrice) {
-        delete patchPayloadObj.itemPrice;
-      }
-      if (menuObj.itemCategory === partialItemCategory) {
-        delete patchPayloadObj.itemCategory;
-      }
-      if (menuObj.itemAvailability === partialItemAvailability) {
-        delete patchPayloadObj.itemAvailability;
-      }
-    }
-    console.log("PatchPayloadObj", patchPayloadObj);
-    console.log("state menuObj", menuObj);
-    if (patchPayloadObj !== menuObj) {
-      Object.keys(menuObj).forEach((menuObjKey) => {
-        if (menuObjKey in patchPayloadObj)
-          patchPayloadObj[menuObjKey] = menuObj[menuObjKey];
+      Object.keys(menuObj).forEach((propertyName) => {
+        if (menuObj[propertyName] !== patchPayloadObj[propertyName]) {
+          patchReqObject[propertyName] = menuObj[propertyName];
+        }
       });
     }
-    return patchPayloadObj;
+    return patchReqObject;
   }
 
   const updateItem = async (event) => {
     event.preventDefault();
-
     const partialMenuObj = getPartialUpdateItemObj();
-
-    console.log(
-      "Your Partial Obj before sending a request to backend",
-      partialMenuObj,
-    );
-
-    const response = await partialUpdate(partialMenuObj, itemId);
-    console.log("Item Updation status", response.data);
-    navigate("/");
+    if (Object.keys(partialMenuObj).length > 0) {
+      const response = await partialUpdate(partialMenuObj, itemId);
+      console.log("Item Updation status", response.data);
+      navigate("/");
+    } else navigate("/");
   };
 
   const itemNameHandler = (event) => {
