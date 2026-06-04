@@ -1,22 +1,32 @@
 import { useEffect, useState } from "react";
 import { getAllItems } from "../../services/MenuManagementService";
-import CartComponent from "./CartComponent";
+import AddCartComponent from "./AddCartComponent";
+import CartItemsListComponent from "./CartItemsListComponent";
 
 function OrderItemsComponent() {
   const [menuItems, setMenuItems] = useState([]);
-
+  const [itemsInCart, setCartItems] = useState([]);
   useEffect(() => {
     getAllItems().then((response) => setMenuItems(response.data));
   }, []);
+  // This runs only when itemsInCart actually changes
+  useEffect(() => {
+    console.log("Current Cart Contents:", itemsInCart);
+  }, [itemsInCart]);
 
   let availableMenuItems = menuItems.filter(
     (item) => item.itemAvailability === true,
   );
 
-  function addToCart(menuItem, qty) {
-    console.log(
-      qty + " " + menuItem.itemName + " were added successfully into a cart",
-    );
+  const availableItemsInCart = (nextItem) =>
+    setCartItems((prevCartItems) => {
+      console.log("Previous Cart Items List", prevCartItems);
+      return [...prevCartItems, nextItem];
+    });
+
+  function addToCart(nextMenuItem, qty) {
+    // TODO: Prevent Duplicate Cart Items
+    availableItemsInCart({ ...nextMenuItem, quantity: qty });
   }
   return (
     <>
@@ -40,7 +50,7 @@ function OrderItemsComponent() {
                     <td>{item.itemPrice}</td>
                     <td>{item.itemCategory}</td>
                     <td>
-                      <CartComponent menuItem={item} addToCart={addToCart} />
+                      <AddCartComponent menuItem={item} addToCart={addToCart} />
                     </td>
                   </tr>
                 );
@@ -48,6 +58,7 @@ function OrderItemsComponent() {
             </tbody>
           </table>
         </div>
+        <CartItemsListComponent cartItemsList={itemsInCart} />
       </div>
     </>
   );

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ItemQuantityComponent from "./ItemQuantityComponent";
 
-function CartComponent({ menuItem, addToCart }) {
+function AddCartComponent({ menuItem, addToCart }) {
   const [quantity, setQuantity] = useState(1);
   const decrementQty = () => {
     setQuantity((currentQty) => Math.max(1, currentQty - 1));
@@ -28,4 +28,4 @@ function CartComponent({ menuItem, addToCart }) {
   );
 }
 
-export default CartComponent;
+export default AddCartComponent;
