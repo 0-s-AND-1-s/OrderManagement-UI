@@ -1,13 +1,19 @@
-function ItemQuantityComponent({ quantity, incrementQty, decrementQty }) {
+function ItemQuantityComponent({ quantity, updateQuantity }) {
   return (
     <>
-      <button className="btn btn-outline-primary" onClick={decrementQty}>
+      <button
+        className="btn btn-outline-primary"
+        onClick={() => updateQuantity(-1)}
+      >
         -
       </button>
 
       <span className="fw-bold px-2">{quantity}</span>
 
-      <button className="btn btn-outline-primary" onClick={incrementQty}>
+      <button
+        className="btn btn-outline-primary"
+        onClick={() => updateQuantity(1)}
+      >
         +
       </button>
     </>

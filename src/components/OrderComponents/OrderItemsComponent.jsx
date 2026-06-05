@@ -18,16 +18,26 @@ function OrderItemsComponent() {
     (item) => item.itemAvailability === true,
   );
 
-  const availableItemsInCart = (nextItem) =>
+  const addToCart = (nextMenuItem, qty) => {
     setCartItems((prevCartItems) => {
-      console.log("Previous Cart Items List", prevCartItems);
-      return [...prevCartItems, nextItem];
-    });
+      //checking if there's an duplicated element
+      const isAvailable = prevCartItems.some(
+        (cartItem) => cartItem.itemId === nextMenuItem.itemId,
+      );
 
-  function addToCart(nextMenuItem, qty) {
-    // TODO: Prevent Duplicate Cart Items
-    availableItemsInCart({ ...nextMenuItem, quantity: qty });
-  }
+      if (isAvailable) {
+        return prevCartItems.map((cartItem) =>
+          cartItem.itemId === nextMenuItem.itemId
+            ? { ...cartItem, quantity: cartItem.quantity + qty }
+            : cartItem,
+        );
+      }
+
+      //if no duplicate cart item exists
+      return [...prevCartItems, { ...nextMenuItem, quantity: qty }];
+    });
+  };
+
   return (
     <>
       <div className="container">
