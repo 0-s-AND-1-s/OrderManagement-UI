@@ -1,9 +1,13 @@
-function CartItemsListComponent({ cartItemsList }) {
-  const totalPrice = cartItemsList.reduce((total, item) => {
+import { useCart } from "../../context/CartContext";
+import ItemQuantityComponent from "./ItemQuantityComponent";
+
+function CartItemsListComponent() {
+  const { itemsInCart, changeQuantity, removeFromCart } = useCart();
+  const totalPrice = itemsInCart.reduce((total, item) => {
     return total + item.quantity * item.itemPrice;
   }, 0);
 
-  if (cartItemsList.length === 0) {
+  if (itemsInCart.length === 0) {
     return (
       <div className="mt-4">
         <h3>Items in Cart:</h3>
@@ -26,13 +30,25 @@ function CartItemsListComponent({ cartItemsList }) {
         </thead>
 
         <tbody>
-          {cartItemsList.map((item) => (
+          {itemsInCart.map((item) => (
             <tr key={item.itemId}>
               <td>{item.itemName}</td>
-              <td>{item.quantity}</td>
+              <td>
+                <ItemQuantityComponent
+                  quantity={item.quantity}
+                  updateQuantity={(change) =>
+                    changeQuantity(item.itemId, change)
+                  }
+                />
+              </td>
               <td>${(item.quantity * item.itemPrice).toFixed(2)}</td>
               <td>
-                <button className="btn btn-danger">Remove</button>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => removeFromCart(item.itemId)}
+                >
+                  Remove
+                </button>
               </td>
             </tr>
           ))}

@@ -5,38 +5,13 @@ import CartItemsListComponent from "./CartItemsListComponent";
 
 function OrderItemsComponent() {
   const [menuItems, setMenuItems] = useState([]);
-  const [itemsInCart, setCartItems] = useState([]);
   useEffect(() => {
     getAllItems().then((response) => setMenuItems(response.data));
   }, []);
-  // This runs only when itemsInCart actually changes
-  useEffect(() => {
-    console.log("Current Cart Contents:", itemsInCart);
-  }, [itemsInCart]);
 
   let availableMenuItems = menuItems.filter(
     (item) => item.itemAvailability === true,
   );
-
-  const addToCart = (nextMenuItem, qty) => {
-    setCartItems((prevCartItems) => {
-      //checking if there's an duplicated element
-      const isAvailable = prevCartItems.some(
-        (cartItem) => cartItem.itemId === nextMenuItem.itemId,
-      );
-
-      if (isAvailable) {
-        return prevCartItems.map((cartItem) =>
-          cartItem.itemId === nextMenuItem.itemId
-            ? { ...cartItem, quantity: cartItem.quantity + qty }
-            : cartItem,
-        );
-      }
-
-      //if no duplicate cart item exists
-      return [...prevCartItems, { ...nextMenuItem, quantity: qty }];
-    });
-  };
 
   return (
     <>
@@ -60,7 +35,7 @@ function OrderItemsComponent() {
                     <td>{item.itemPrice}</td>
                     <td>{item.itemCategory}</td>
                     <td>
-                      <AddCartComponent menuItem={item} addToCart={addToCart} />
+                      <AddCartComponent menuItem={item} />
                     </td>
                   </tr>
                 );
@@ -68,7 +43,7 @@ function OrderItemsComponent() {
             </tbody>
           </table>
         </div>
-        <CartItemsListComponent cartItemsList={itemsInCart} />
+        <CartItemsListComponent />
       </div>
     </>
   );

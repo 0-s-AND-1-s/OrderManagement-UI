@@ -1,8 +1,9 @@
 import { useState } from "react";
 import ItemQuantityComponent from "./ItemQuantityComponent";
-
-function AddCartComponent({ menuItem, addToCart }) {
+import { useCart } from "../../context/CartContext";
+function AddCartComponent({ menuItem }) {
   const [quantity, setQuantity] = useState(1);
+  const { addToCart } = useCart();
 
   const updateMenuRowQty = (change) => {
     //currentQty holds the latest state(quantity) value
