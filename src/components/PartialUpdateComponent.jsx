@@ -24,6 +24,7 @@ function PartialUpdateComponent() {
     const patchReqObject = {};
     if (patchPayloadObj !== menuObj) {
       Object.keys(menuObj).forEach((propertyName) => {
+        //Checking if the data has been changed
         if (menuObj[propertyName] !== patchPayloadObj[propertyName]) {
           patchReqObject[propertyName] = menuObj[propertyName];
         }

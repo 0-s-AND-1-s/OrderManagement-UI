@@ -1,11 +1,27 @@
 import { useCart } from "../../context/CartContext";
 import ItemQuantityComponent from "./ItemQuantityComponent";
+import { createOrder } from "../../services/OrderManagementService";
 
 function CartItemsListComponent() {
   const { itemsInCart, changeQuantity, removeFromCart } = useCart();
   const totalPrice = itemsInCart.reduce((total, item) => {
     return total + item.quantity * item.itemPrice;
   }, 0);
+
+  const placeOrder = async (orderItemsList) => {
+    const orderItemsRequest = orderItemsList.map((orderItem) => ({
+      itemId: orderItem.itemId,
+      quantity: orderItem.quantity,
+    }));
+
+    try {
+      //Sending a request to backend api
+      const response = await createOrder(orderItemsRequest);
+      console.log(response);
+    } catch (error) {
+      console.log("Failed to place order:", error);
+    }
+  };
 
   if (itemsInCart.length === 0) {
     return (
@@ -58,7 +74,12 @@ function CartItemsListComponent() {
       <div className="d-flex justify-content-between align-items-center">
         <h5>Total: ${totalPrice.toFixed(2)}</h5>
 
-        <button className="btn btn-success">Submit Order</button>
+        <button
+          className="btn btn-success"
+          onClick={() => placeOrder(itemsInCart)}
+        >
+          Submit Order
+        </button>
       </div>
     </div>
   );
