@@ -1,4 +1,4 @@
-import { createItem } from "../services/MenuManagementService";
+import { createItem } from "../../services/MenuManagementService";
 import { useNavigate } from "react-router-dom";
 function CreateItemComponent() {
   //  const [menuData, setMenuData] = useState({});

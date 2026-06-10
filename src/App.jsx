@@ -2,10 +2,11 @@ import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 // import MenuItemsDisplay from "./components/MenuItemsDisplay";
 import OrderItemsComponent from "./components/OrderComponents/OrderItemsComponent";
-import CreateItemComponent from "./components/CreateItemComponent";
-import UpdateMenuItemComponent from "./components/UpdateMenuItemComponent";
-import PartialUpdateComponent from "./components/PartialUpdateComponent";
+import CreateItemComponent from "./components/MenuComponents/CreateItemComponent";
+import UpdateMenuItemComponent from "./components/MenuComponents/UpdateMenuItemComponent";
+import PartialUpdateComponent from "./components/MenuComponents/PartialUpdateComponent";
 import CartItemsContext from "./context/CartItemsContext";
+import DisplayReceiptComponent from "./components/ReceiptComponents/DisplayReceiptComponent";
 function App() {
   return (
     <>
@@ -23,6 +24,10 @@ function App() {
             <Route
               path="/partialUpdateItem/:itemId"
               element={<PartialUpdateComponent />}
+            />
+            <Route
+              path="/displayReceipt/:receiptId"
+              element={<DisplayReceiptComponent />}
             />
           </Routes>
         </CartItemsContext>

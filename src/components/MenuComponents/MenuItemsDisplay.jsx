@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import { getAllItems, deleteItem } from "../services/MenuManagementService";
+import { getAllItems, deleteItem } from "../../services/MenuManagementService";
 import { useNavigate } from "react-router-dom";
 
+//Going to change this eventually based on user access
+let isAdmin = false;
 function MenuItemsDisplay() {
   const [menuItems, setMenuItems] = useState([]);
   const navigate = useNavigate();
@@ -53,30 +55,34 @@ function MenuItemsDisplay() {
                     <td>
                       {item.itemAvailability ? "Available" : "Not Available"}
                     </td>
-                    <td>
-                      <button
-                        className="btn btn-primary"
-                        onClick={() => updateMenuItem(item.itemId)}
-                      >
-                        Update
-                      </button>
-                    </td>
-                    <td>
-                      <button
-                        className="btn btn-primary"
-                        onClick={() => partialUpdateItem(item.itemId)}
-                      >
-                        Partial Update
-                      </button>
-                    </td>
-                    <td>
-                      <button
-                        onClick={() => deleteMenuItem(item.itemId)}
-                        className="btn btn-danger"
-                      >
-                        Delete
-                      </button>
-                    </td>
+                    {isAdmin && (
+                      <>
+                        <td>
+                          <button
+                            className="btn btn-primary"
+                            onClick={() => updateMenuItem(item.itemId)}
+                          >
+                            Update
+                          </button>
+                        </td>
+                        <td>
+                          <button
+                            className="btn btn-primary"
+                            onClick={() => partialUpdateItem(item.itemId)}
+                          >
+                            Partial Update
+                          </button>
+                        </td>
+                        <td>
+                          <button
+                            onClick={() => deleteMenuItem(item.itemId)}
+                            className="btn btn-danger"
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </>
+                    )}
                   </tr>
                 );
               })}

@@ -52,9 +52,18 @@ function CartItemsContext({ children }) {
     [],
   );
 
+  //Makes your ItemsInCart empty
+  const resetCart = useCallback(() => setCartItems([]), []);
+
   const value = useMemo(
-    () => ({ itemsInCart, addToCart, changeQuantity, removeFromCart }),
-    [itemsInCart, addToCart, changeQuantity, removeFromCart],
+    () => ({
+      itemsInCart,
+      addToCart,
+      changeQuantity,
+      removeFromCart,
+      resetCart,
+    }),
+    [itemsInCart, addToCart, changeQuantity, removeFromCart, resetCart],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

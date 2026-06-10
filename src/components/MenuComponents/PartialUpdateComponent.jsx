@@ -1,28 +1,49 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getItemById, updateMenuItem } from "../services/MenuManagementService";
+import {
+  getItemById,
+  partialUpdate,
+} from "../../services/MenuManagementService";
 
-function UpdateMenuItemComponent() {
+function PartialUpdateComponent() {
   const { itemId } = useParams();
   const [menuObj, setMenuObj] = useState({});
   const navigate = useNavigate();
+  let partialObj = useRef({});
+
   useEffect(() => {
     // Get Menu Id here and
+    console.log("Partial Update Component useEffect() got called");
     getItemById(itemId).then((response) => {
-      console.log("MenuItem By ID", response.data);
-      setMenuObj(response.data);
+      console.log("response.data", response.data);
+      const stateMenuObj = response.data;
+      partialObj.current = stateMenuObj;
+      setMenuObj(stateMenuObj);
     });
   }, [itemId]);
 
+  function getPartialUpdateItemObj() {
+    const patchPayloadObj = partialObj.current;
+    const patchReqObject = {};
+    if (patchPayloadObj !== menuObj) {
+      Object.keys(menuObj).forEach((propertyName) => {
+        //Checking if the data has been changed
+        if (menuObj[propertyName] !== patchPayloadObj[propertyName]) {
+          patchReqObject[propertyName] = menuObj[propertyName];
+        }
+      });
+    }
+    return patchReqObject;
+  }
+
   const updateItem = async (event) => {
     event.preventDefault();
-    console.log(
-      "Your Updated Obj before sending a request to backend",
-      menuObj,
-    );
-    const response = await updateMenuItem(menuObj, itemId);
-    console.log("Item Updation status", response.data);
-    navigate("/");
+    const partialMenuObj = getPartialUpdateItemObj();
+    if (Object.keys(partialMenuObj).length > 0) {
+      const response = await partialUpdate(partialMenuObj, itemId);
+      console.log("Item Updation status", response.data);
+      navigate("/");
+    } else navigate("/");
   };
 
   const itemNameHandler = (event) => {
@@ -40,13 +61,14 @@ function UpdateMenuItemComponent() {
   const itemAvailabilityHandler = (event) => {
     setMenuObj({ ...menuObj, itemAvailability: event.target.value === "true" });
   };
+
   return (
     <>
       <h1>Hey Abhi !!You're here to Update a MenuItem Tadaa 😒</h1>
       <div className="container">
         <div className="row">
           <div className="card col-md-6 offset-md-3">
-            <h3 className="text-center">Update MenuItem</h3>
+            <h3 className="text-center">Partial Update MenuItem</h3>
             <div className="card-body">
               <form onSubmit={updateItem}>
                 <div className="form-group mb-3">
@@ -122,4 +144,4 @@ function UpdateMenuItemComponent() {
   );
 }
 
-export default UpdateMenuItemComponent;
+export default PartialUpdateComponent;
