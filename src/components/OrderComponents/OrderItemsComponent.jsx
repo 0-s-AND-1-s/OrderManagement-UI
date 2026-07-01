@@ -6,7 +6,11 @@ import CartItemsListComponent from "./CartItemsListComponent";
 function OrderItemsComponent() {
   const [menuItems, setMenuItems] = useState([]);
   useEffect(() => {
-    getAllItems().then((response) => setMenuItems(response.data));
+    getAllItems()
+      .then((response) => setMenuItems(response.data))
+      .catch((error) => {
+        console.log(error.data);
+      });
   }, []);
 
   let availableMenuItems = menuItems.filter(

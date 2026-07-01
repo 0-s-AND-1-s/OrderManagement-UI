@@ -7,6 +7,7 @@ import UpdateMenuItemComponent from "./components/MenuComponents/UpdateMenuItemC
 import PartialUpdateComponent from "./components/MenuComponents/PartialUpdateComponent";
 import CartItemsContext from "./context/CartItemsContext";
 import DisplayReceiptComponent from "./components/ReceiptComponents/DisplayReceiptComponent";
+import HomePage from "./components/HomePage/HomePageComponent";
 function App() {
   return (
     <>
@@ -14,7 +15,8 @@ function App() {
         <CartItemsContext>
           <Routes>
             //Going to change this eventually based on user access
-            <Route path="/" element={<OrderItemsComponent />} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/orderItems" element={<OrderItemsComponent />} />
             {/* <Route path="/" element={<MenuItemsDisplay />} /> */}
             <Route path="/createItem" element={<CreateItemComponent />} />
             <Route

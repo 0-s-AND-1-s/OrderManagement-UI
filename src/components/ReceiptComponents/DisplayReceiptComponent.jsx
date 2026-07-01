@@ -140,7 +140,7 @@ function DisplayReceiptComponent() {
       {/* Navigation Safety Net Button */}
       <button
         className="btn btn-outline-dark font-monospace px-4 mt-3 shadow-sm"
-        onClick={() => navigate("/")}
+        onClick={() => navigate("/orderItems")}
       >
         ⬅ Back to Menu
       </button>

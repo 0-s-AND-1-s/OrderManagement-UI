@@ -1,31 +1,20 @@
-import axios from "axios";
+import apiClient from "./apiClient";
 
-const baseURL = "http://localhost:9090/api/v1";
-const token =
-  "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaG9jbyIsInJvbGVzIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3OTIxMjY1OSwiZXhwIjoxNzc5ODE3NDU5fQ.Sio4WJR6uveg4wMjIfdmM7iy2l5Or3wWTj0XKRJ6AFI";
-const headerConfig = {
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
-};
-export const getAllItems = () =>
-  axios.get(`${baseURL}/getAllItems`, headerConfig);
+export const getAllItems = () => apiClient.get(`/api/v1/getAllItems`);
 
 export const deleteItem = (itemId) =>
-  axios.delete(baseURL + `/deleteItem/${itemId}`, headerConfig);
+  apiClient.delete(`/api/v1/deleteItem/${itemId}`);
 
-export const createItem = (item) =>
-  axios.post(baseURL + `/createItem`, item, headerConfig);
+export const createItem = (item) => apiClient.post(`/api/v1/createItem`, item);
 
 export const partialUpdate = (item, id) => {
   console.log(typeof id);
-  console.log(baseURL + `/updateItem/${id}`);
-  return axios.patch(baseURL + `/updateItem/${id}`, item, headerConfig);
+  console.log(`/api/v1/updateItem/${id}`);
+  return apiClient.patch(`/api/v1/updateItem/${id}`, item);
 };
 
-export const getItemById = (id) =>
-  axios.get(baseURL + `/getItem/${id}`, headerConfig);
+export const getItemById = (id) => apiClient.get(`/api/v1/getItem/${id}`);
 
 export const updateMenuItem = (item, id) => {
-  return axios.put(baseURL + `/updateItem/${id}`, item, headerConfig);
+  return apiClient.put(`/api/v1/updateItem/${id}`, item);
 };
