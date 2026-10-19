@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiClient = axios.create({ baseURL: "http://localhost:9090" });
+const apiClient = axios.create({ baseURL: "/api" });
 
 apiClient.interceptors.request.use(
   (config) => {
@@ -39,7 +39,8 @@ apiClient.interceptors.response.use(
 
 export default apiClient;
 
-/* Status code Scenarios for getting other 2xx
+/* Status code Scenarios for getting other then 2xx
         404-->User not found
         401 --> Wrong password..Bad credentials
+        403 --> Unauthorized
  */

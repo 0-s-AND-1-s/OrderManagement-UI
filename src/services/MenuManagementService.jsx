@@ -1,20 +1,20 @@
 import apiClient from "./apiClient";
 
-export const getAllItems = () => apiClient.get(`/api/v1/getAllItems`);
+const baseUrl = "/v1/menu-items";
+export const getAllItems = () => apiClient.get(baseUrl);
 
-export const deleteItem = (itemId) =>
-  apiClient.delete(`/api/v1/deleteItem/${itemId}`);
+export const deleteItem = (itemId) => apiClient.delete(`${baseUrl}/${itemId}`);
 
-export const createItem = (item) => apiClient.post(`/api/v1/createItem`, item);
+export const createItem = (item) => apiClient.post(baseUrl, item);
 
 export const partialUpdate = (item, id) => {
   console.log(typeof id);
   console.log(`/api/v1/updateItem/${id}`);
-  return apiClient.patch(`/api/v1/updateItem/${id}`, item);
+  return apiClient.patch(`${baseUrl}/${id}`, item);
 };
 
-export const getItemById = (id) => apiClient.get(`/api/v1/getItem/${id}`);
+export const getItemById = (id) => apiClient.get(`${baseUrl}/${id}`);
 
 export const updateMenuItem = (item, id) => {
-  return apiClient.put(`/api/v1/updateItem/${id}`, item);
+  return apiClient.put(`${baseUrl}/${id}`, item);
 };
